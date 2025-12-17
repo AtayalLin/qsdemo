@@ -1,0 +1,212 @@
+    /* 全螢幕波浪背景 */
+.bg-wave {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(160deg, #ffe6d8 0%, #ffd3c0 50%, #ffbfa0 100%);
+  overflow: hidden;
+  z-index: -1;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    animation: waveMove 20s linear infinite;
+  }
+}
+
+@keyframes waveMove {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* 問卷容器 */
+.survey-wrapper {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 40px;
+  background: rgba(255, 248, 240, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  text-align: center;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+/* 登入按鈕 */
+.login-btn {
+  background-color: #f4a261;
+  color: #fff;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #e76f51;
+  }
+}
+
+/* 搜尋區 */
+.search-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+
+  input, select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #e6c7b5;
+    font-size: 0.95rem;
+    outline: none;
+    transition: 0.3s;
+
+    &:focus {
+      border-color: #f4a261;
+      box-shadow: 0 0 5px rgba(244, 162, 97, 0.5);
+    }
+  }
+
+  button {
+    background-color: #f4a261;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #e76f51;
+    }
+  }
+}
+
+/* 問卷列表 */
+.survey-list {
+  border-top: 2px solid #f4a261;
+
+  .survey-header, .survey-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    align-items: center;
+  }
+
+  .survey-header {
+    font-weight: bold;
+    color: #6d4c41;
+    border-bottom: 1px solid #f4a261;
+  }
+
+  .survey-row {
+    background: rgba(255, 255, 255, 0.9);
+    margin-bottom: 8px;
+    border-radius: 10px;
+    padding: 10px 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .col {
+      flex: 1;
+      text-align: center;
+      font-size: 0.95rem;
+
+      &.action {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+
+        button {
+          padding: 6px 12px;
+          border-radius: 6px;
+          border: none;
+          font-size: 0.85rem;
+          cursor: pointer;
+          transition: 0.3s;
+        }
+
+        .btn-primary {
+          background-color: #f4a261;
+          color: #fff;
+
+          &:hover {
+            background-color: #e76f51;
+          }
+        }
+
+        .btn-secondary {
+          background-color: #ffd3c0;
+          color: #6d4c41;
+
+          &:hover {
+            background-color: #ffbfa0;
+          }
+        }
+
+        .btn-edit {
+          background-color: #ffe6d8;
+          color: #6d4c41;
+
+          &:hover {
+            background-color: #ffd3c0;
+          }
+        }
+
+        .btn-delete {
+          background-color: #e76f51;
+          color: #fff;
+
+          &:hover {
+            background-color: #d65a4f;
+          }
+        }
+      }
+    }
+
+    .status-active {
+      color: #2a9d8f;
+      font-weight: 600;
+    }
+
+    .status-closed {
+      color: #e76f51;
+      font-weight: 600;
+    }
+  }
+}
+
+/* 響應式 */
+@media screen and (max-width: 768px) {
+  .survey-wrapper {
+    padding: 30px 20px;
+  }
+
+  .search-filters {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .survey-header, .survey-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .col.action {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+}

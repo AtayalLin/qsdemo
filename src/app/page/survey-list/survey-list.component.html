@@ -1,0 +1,59 @@
+<!-- 全螢幕背景波浪 -->
+<div class="bg-wave"></div>
+
+<!-- 問卷容器 -->
+<div class="survey-wrapper">
+  <!-- 登入按鈕 -->
+  <button class="login-btn" (click)="goToAdmin()">登入後台</button>
+
+  <!-- 搜尋區 -->
+  <div class="search-filters">
+    <input type="text" placeholder="搜尋問卷名稱..." [(ngModel)]="searchText" (input)="onSearch()" />
+    <select [(ngModel)]="searchType" (change)="onSearch()">
+      <option value="">全部類型</option>
+      <option value="滿意度">滿意度</option>
+      <option value="市場調查">市場調查</option>
+      <option value="員工回饋">員工回饋</option>
+    </select>
+    <select [(ngModel)]="searchStatus" (change)="onSearch()">
+      <option value="">全部狀態</option>
+      <option value="已發佈">已發佈</option>
+      <option value="草稿">草稿</option>
+    </select>
+    <button (click)="onSearch()">搜尋</button>
+  </div>
+
+  <!-- 問卷列表 -->
+  <div class="survey-list">
+    <div class="survey-header">
+      <div class="col id">編號</div>
+      <div class="col title">名稱</div>
+      <div class="col type">問卷類型</div>
+      <div class="col start">開始時間</div>
+      <div class="col end">結束時間</div>
+      <div class="col participants">填答人數</div>
+      <div class="col status">發布狀態</div>
+      <div class="col action">操作</div>
+    </div>
+
+    <div *ngFor="let survey of filteredSurveys; trackBy: trackById" class="survey-row">
+      <div class="col id">{{ survey.id }}</div>
+      <div class="col title">{{ survey.title }}</div>
+      <div class="col type">{{ survey.type }}</div>
+      <div class="col start">{{ survey.startDate }}</div>
+      <div class="col end">{{ survey.endDate }}</div>
+      <div class="col participants">{{ survey.participants }}</div>
+      <div class="col status"
+           [ngClass]="{'status-active': survey.publishStatus === '已發佈',
+                       'status-closed': survey.publishStatus === '草稿'}">
+        {{ survey.publishStatus }}
+      </div>
+      <div class="col action">
+        <button *ngIf="survey.publishStatus === '已發佈'" class="btn-primary" (click)="startSurvey(survey.id)">開始填寫</button>
+        <button *ngIf="survey.publishStatus === '已發佈'" class="btn-secondary" [routerLink]="['/surveys', survey.id, 'result']">查看結果</button>
+        <button class="btn-edit" (click)="editSurvey(survey.id)">編輯</button>
+        <button class="btn-delete" (click)="deleteSurvey(survey.id)">刪除</button>
+      </div>
+    </div>
+  </div>
+</div>
