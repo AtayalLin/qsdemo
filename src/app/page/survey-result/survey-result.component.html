@@ -1,1 +1,155 @@
-<p>survey-result works!</p>
+<div class="bg-wave"></div>
+
+@if (surveyResult) {
+<div class="result-page">
+  <section class="survey-header">
+    <h1 class="survey-title">{{ surveyResult.title }} - 統計結果</h1>
+    <div class="survey-meta">
+      <span>問卷類型：市場調查</span>
+      <span>調查期間：8033-11-25 ～ 8033-12-31</span>
+      <span>有效樣本數：{{ surveyResult.totalResponses | number }} 份</span>
+    </div>
+  </section>
+
+  <section class="question-list">
+    <div class="question-card">
+      <div class="question-head">
+        <span class="question-type single">單選題</span>
+        <h3>Q1：您目前最常使用的遊戲平台為？</h3>
+      </div>
+      <div class="chart-layout">
+        <div class="chart-wrapper">
+          <canvas id="q1PieChart"></canvas>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item">
+            <span class="legend-dot mobile-color-dot"></span>
+            <span class="legend-label">行動裝置 (iOS/Android)</span>
+            <span class="result-text">37.5%（445 人）</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot ps-color"></span>
+            <span class="legend-label">PlayStation 系列</span>
+            <span class="result-text">24.0%（285 人）</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot switch-color"></span>
+            <span class="legend-label">Nintendo Switch 1、2</span>
+            <span class="result-text">17.7%（210 人）</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot xbox-color"></span>
+            <span class="legend-label">Xbox 系列</span>
+            <span class="result-text">12.4%（147 人）</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot pc-color"></span>
+            <span class="legend-label">PC (桌上型/筆記型)</span>
+            <span class="result-text">8.4%（100 人）</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @for (question of ['q2', 'q3', 'q4']; track question) {
+      <div class="question-card">
+        <div class="question-head">
+          <span class="question-type" [class]="question === 'q3' ? 'single' : 'multiple'">
+            {{ question === 'q3' ? '單選題' : '複選題' }}
+          </span>
+          <h3>
+            @if (question === 'q2') { Q2：您選擇遊戲平台時重視哪些因素？ }
+            @else if (question === 'q3') { Q3：您是否願意嘗試支援 VR / AR 的遊戲主機？ }
+            @else { Q4：您最常遊玩的遊戲類型為？ }
+          </h3>
+        </div>
+        
+        <ul class="option-list">
+          @for (stat of surveyResult.stats[question]; track stat.label) {
+            <li>
+              <div class="option-item result">
+                <div class="option-content">
+                  <div class="option-text">
+                    <span>{{ stat.label }}</span>
+                    <span class="result-text">{{ stat.percent }}%（{{ stat.count }} 人）</span>
+                  </div>
+                  <div class="progress result-progress" [class]="'color-' + question">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" 
+                         [style.width.%]="stat.percent" 
+                         [attr.aria-valuenow]="stat.percent" 
+                         aria-valuemin="0" 
+                         aria-valuemax="100">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+
+    <div class="question-card">
+      <div class="question-head">
+        <span class="question-type text">開放題</span>
+        <h3>Q5：您對未來遊戲主機或平台有什麼期待或建議？</h3>
+      </div>
+      <div class="text-summary">
+        <p>本題共蒐集 1,187 則回覆。AI 分析顯示熱門期待包括：<strong>「更強的電池續航」</strong>、<strong>「手遊與家機資料互通」</strong>以及<strong>「降低主機運行噪音」</strong>。</p>
+      </div>
+    </div>
+
+    <div class="action-footer result-footer">
+      <button type="button" class="btn-gaming-submit" (click)="goBack()">
+        <i class="fas fa-undo-alt"></i> 完成閱讀，返回列表
+      </button>
+
+      <div class="subscribe-zone">
+        <button type="button" class="btn-subscribe-trigger" (click)="isModalOpen = true; step = 1">
+          <i class="fas fa-envelope"></i> 訂閱電子報
+        </button>
+      </div>
+    </div>
+  </section>
+</div>
+
+@if (isModalOpen) {
+  <div class="modal-overlay">
+    <div class="gaming-modal">
+      
+      @if (step === 1) {
+        <div class="modal-icon">📩</div>
+        <div class="modal-text">想收到最新的遊戲調查報告嗎？</div>
+        <div class="modal-actions">
+          <button class="btn-modal-secondary" (click)="isModalOpen = false">下次一定</button>
+          <button class="btn-modal-primary" (click)="step = 2">填寫信箱</button>
+        </div>
+      }
+
+      @else if (step === 2) {
+        <div class="modal-icon">✍️</div>
+        <div class="modal-text">請留下您的電子信箱</div>
+        <div class="input-wrapper">
+          <input type="email" [(ngModel)]="userEmail" class="gaming-input" placeholder="example@email.com">
+        </div>
+        <div class="modal-actions">
+          <button class="btn-modal-secondary" (click)="step = 1; userEmail = ''">取消</button>
+          <button class="btn-modal-confirm" [disabled]="!userEmail" (click)="handleSubscribe()">確認</button>
+        </div>
+      }
+
+      @else if (step === 3) {
+        <div class="modal-icon">🎉</div>
+        <div class="modal-text thanks-header">感謝您訂閱電子報 !</div>
+        <div class="modal-subtext">本視窗即將自動關閉</div>
+      }
+
+    </div>
+  </div>
+}
+} @else {
+  <div class="result-page loading-box">
+    <h1 class="survey-title">統計數據計算中...</h1>
+  </div>
+}

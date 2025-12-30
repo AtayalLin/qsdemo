@@ -1,4 +1,6 @@
-    /* 全螢幕波浪背景 */
+/* ===============================
+   全螢幕背景
+================================ */
 .bg-wave {
   position: fixed;
   top: 0;
@@ -8,205 +10,504 @@
   background: linear-gradient(160deg, #ffe6d8 0%, #ffd3c0 50%, #ffbfa0 100%);
   overflow: hidden;
   z-index: -1;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
-    animation: waveMove 20s linear infinite;
-  }
 }
 
-@keyframes waveMove {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* 問卷容器 */
+/* ===============================
+   問卷容器
+================================ */
 .survey-wrapper {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 60px auto;
   padding: 40px;
   background: rgba(255, 248, 240, 0.95);
   border-radius: 20px;
   box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-  text-align: center;
   font-family: 'Noto Sans JP', sans-serif;
 }
 
-/* 登入按鈕 */
+/* ===============================
+   登入按鈕
+================================ */
 .login-btn {
-  background-color: #f4a261;
-  color: #fff;
-  padding: 12px 30px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-bottom: 30px;
-  transition: all 0.3s ease;
+  display: block;
+  margin-left: auto;
+  margin-bottom: 16px;
 
-  &:hover {
-    background-color: #e76f51;
-  }
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: none;
+
+  background: linear-gradient(
+    135deg,
+    #f4a261,
+    #e76f51
+  );
+
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(231, 111, 81, 0.25);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/* 搜尋區 */
-.search-filters {
+.login-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(231, 111, 81, 0.35);
+}
+
+/* 密碼包裝容器 */
+.password-wrapper {
+  position: relative;
   display: flex;
+  align-items: center;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* 為圖示留出空間 */
+}
+
+/* 眼睛按鈕樣式 */
+.toggle-eye {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+}
+
+.toggle-eye:hover {
+  color: #333;
+}
+
+/* 確保 FontAwesome 圖示大小適中 */
+.toggle-eye i {
+  font-size: 1.1rem;
+}
+
+/* 延續您原有的 input-group 樣式 (範例) */
+.input-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+/* ===============================
+   彈窗遮罩 (修正為與背景一致的模糊感)
+================================ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(109, 76, 65, 0.4); /* 使用深棕色半透明，增加溫暖感 */
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* ===============================
+   彈窗主體 (對齊 .survey-wrapper 樣式)
+================================ */
+.modal-content {
+  background: rgba(255, 248, 240, 0.98); /* 與容器一致的底色 */
+  padding: 40px;
+  border-radius: 20px; /* 一樣的圓角 */
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 50px rgba(231, 111, 81, 0.2); /* 帶有主題色的陰影 */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  animation: modalFadeIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #6d4c41; /* 對齊搜尋區字體顏色 */
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.close-x {
+  background: #ffe6d8;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #e76f51;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.close-x:hover {
+  background: #e76f51;
+  color: #fff;
+}
+
+/* ===============================
+   輸入框樣式 (對齊 .search-filters 樣式)
+================================ */
+.input-group {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  color: #b08a74;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.input-group input {
+  width: 100%;
+  height: 44px; /* 比搜尋框略高一點，方便輸入 */
+  padding: 0 16px;
+  border-radius: 10px;
+  border: 1px solid #f0c4a8;
+  background-color: #fffaf6;
+  font-size: 1rem;
+  color: #6d4c41;
+  box-sizing: border-box;
+  transition: all 0.2s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #f4a261;
+  box-shadow: 0 0 0 3px rgba(244, 162, 97, 0.15);
+  background-color: #ffffff;
+}
+
+/* ===============================
+   按鈕樣式 (對齊 login-btn 樣式)
+================================ */
+.modal-footer {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* 登入按鈕使用你的漸層色 */
+.btn-main {
+  width: 100%;
+  height: 48px;
+  border-radius: 24px;
+  border: none;
+  background: linear-gradient(135deg, #f4a261, #e76f51);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(231, 111, 81, 0.25);
+  transition: all 0.2s;
+}
+
+.btn-main:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(231, 111, 81, 0.35);
+}
+
+.footer-sub-btns {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+/* 連結按鈕使用輔助色 */
+.btn-link {
+  background: none;
+  border: none;
+  color: #b08a74;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.2s;
+}
+
+.btn-link:hover {
+  color: #e76f51;
+  text-decoration: underline;
+}
+/* ===============================
+   搜尋區
+================================ */
+.search-filters {
+ display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
-  margin-bottom: 30px;
+  align-items: center;
+  gap: 14px;
 
-  input, select {
-    padding: 10px 15px;
-    border-radius: 8px;
-    border: 1px solid #e6c7b5;
-    font-size: 0.95rem;
-    outline: none;
-    transition: 0.3s;
+  padding: 16px 20px;
+  margin-bottom: 32px;
 
-    &:focus {
-      border-color: #f4a261;
-      box-shadow: 0 0 5px rgba(244, 162, 97, 0.5);
-    }
-  }
-
-  button {
-    background-color: #f4a261;
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background-color: #e76f51;
-    }
-  }
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(6px);
+  border-radius: 14px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
 }
 
-/* 問卷列表 */
+.search-filters input,
+.search-filters select {
+  height: 36px;
+  padding: 0 12px;
+
+  border-radius: 8px;
+  border: 1px solid #f0c4a8;
+  background-color: #fffaf6;
+
+  font-size: 0.9rem;
+  color: #6d4c41;
+
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-filters input::placeholder {
+  color: #b08a74;
+}
+
+.search-filters input:focus,
+.search-filters select:focus {
+  outline: none;
+  border-color: #f4a261;
+  box-shadow: 0 0 0 2px rgba(244, 162, 97, 0.25);
+}
+
+.search-filters button {
+  height: 36px;
+  padding: 0 18px;
+
+  border-radius: 8px;
+  border: none;
+
+  background-color: #f4a261;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.search-filters button:hover {
+  background-color: #e8944f;
+  transform: translateY(-1px);
+}
+
+
+/* ===============================
+   表格外框
+================================ */
 .survey-list {
+  margin-top: 20px;
   border-top: 2px solid #f4a261;
-
-  .survey-header, .survey-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    align-items: center;
-  }
-
-  .survey-header {
-    font-weight: bold;
-    color: #6d4c41;
-    border-bottom: 1px solid #f4a261;
-  }
-
-  .survey-row {
-    background: rgba(255, 255, 255, 0.9);
-    margin-bottom: 8px;
-    border-radius: 10px;
-    padding: 10px 15px;
-    transition: transform 0.2s, box-shadow 0.2s;
-
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-
-    .col {
-      flex: 1;
-      text-align: center;
-      font-size: 0.95rem;
-
-      &.action {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-
-        button {
-          padding: 6px 12px;
-          border-radius: 6px;
-          border: none;
-          font-size: 0.85rem;
-          cursor: pointer;
-          transition: 0.3s;
-        }
-
-        .btn-primary {
-          background-color: #f4a261;
-          color: #fff;
-
-          &:hover {
-            background-color: #e76f51;
-          }
-        }
-
-        .btn-secondary {
-          background-color: #ffd3c0;
-          color: #6d4c41;
-
-          &:hover {
-            background-color: #ffbfa0;
-          }
-        }
-
-        .btn-edit {
-          background-color: #ffe6d8;
-          color: #6d4c41;
-
-          &:hover {
-            background-color: #ffd3c0;
-          }
-        }
-
-        .btn-delete {
-          background-color: #e76f51;
-          color: #fff;
-
-          &:hover {
-            background-color: #d65a4f;
-          }
-        }
-      }
-    }
-
-    .status-active {
-      color: #2a9d8f;
-      font-weight: 600;
-    }
-
-    .status-closed {
-      color: #e76f51;
-      font-weight: 600;
-    }
-  }
+  overflow-x: auto;
 }
 
-/* 響應式 */
+/* ===============================
+   Grid 表格核心（只管結構）
+================================ */
+.survey-header,
+.survey-row {
+  display: grid;
+  grid-template-columns:
+    60px      /* 編號 */
+    2fr       /* 名稱 */
+    1.2fr     /* 問卷類型 */
+    1.2fr     /* 開始時間 */
+    1.2fr     /* 結束時間 */
+    1fr       /* 填答人數 */
+    1fr       /* 發布狀態 */
+    2fr;      /* 操作 */
+  align-items: center;
+}
+
+/* ===============================
+   表頭（只影響 header）
+================================ */
+.survey-header {
+  padding: 14px 10px;
+  background-color: #ffca6e;
+  border-bottom: 2px solid #f4a261;
+  font-weight: 600;
+  color: #6d5f41;
+}
+
+.survey-header .col {
+  text-align: center;
+}
+
+/* ===============================
+   資料列（維持原樣）
+================================ */
+.survey-row {
+  padding: 12px 10px;
+  background: #ffffff;
+  margin-top: 8px;
+  border-radius: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.survey-row:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.survey-row .col {
+  text-align: center;
+}
+
+/* 名稱欄只有 row 靠左 */
+.survey-row .col.title {
+  text-align: left;
+}
+
+/* ===============================
+   所有欄位共用（只放能力）
+================================ */
+.col {
+  min-width: 0;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+
+  padding: 6px 6px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+/* ===============================
+   狀態樣式
+================================ */
+.status-active {
+  color: #2a9d8f;
+  font-weight: 600;
+}
+
+.status-closed {
+  color: #e76f51;
+  font-weight: 600;
+}
+
+/* ===============================
+   操作欄（row 專用）
+================================ */
+.survey-row .col.action {
+  display: grid;
+  grid-template-columns: repeat(2, 88px);
+  gap: 6px 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.col.action button {
+  width: 88px;
+  height: 32px;
+  line-height: 32px;
+  padding: 0;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.survey-row .col.action button:nth-child(odd):last-child {
+  grid-column: span 2;
+  justify-self: center;
+}
+
+/* 按鈕顏色 */
+.btn-primary {
+  background-color: #f4a261;
+  color: #fff;
+}
+
+.btn-secondary {
+  background-color: #ffd3c0;
+  color: #6d4c41;
+}
+
+.btn-edit {
+  background-color: #ffe6d8;
+  color: #6d4c41;
+}
+
+.btn-delete {
+  background-color: #e76f51;
+  color: #fff;
+}
+
+.btn-publish {
+  background-color: #04ebc4;
+  color: #fff;
+}
+
+/* ===============================
+   RWD：小螢幕卡片模式
+================================ */
 @media screen and (max-width: 768px) {
-  .survey-wrapper {
-    padding: 30px 20px;
+
+  .login-btn {
+    margin: 0 auto 20px;
   }
 
   .search-filters {
-    flex-direction: column;
-    align-items: center;
+    padding: 14px;
+    gap: 10px;
+  } 
+
+  .survey-header {
+    display: none;
   }
 
-  .survey-header, .survey-row {
-    flex-direction: column;
-    gap: 6px;
+  .survey-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
-  .col.action {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 6px;
+  .survey-row .col {
+    text-align: left;
+  }
+
+  .survey-row .col.action {
+    justify-content: flex-start;
   }
 }

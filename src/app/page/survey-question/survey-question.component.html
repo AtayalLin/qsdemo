@@ -1,0 +1,116 @@
+<div class="bg-wave"></div>
+
+@if (surveyData) {
+<div class="result-page">
+    <section class="survey-header">
+        <h1 class="survey-title">{{ surveyData.title }}</h1>
+        <p class="survey-intro">請分享您的看法，我們將依據回饋打造次世代的遊戲體驗。</p>
+        <div class="survey-meta">
+            <span>調查期間：{{ surveyData.startDate }} ～ {{ surveyData.endDate }}</span>
+            <span>問卷 ID：#{{ id }}</span>
+        </div>
+    </section>
+
+    <form class="question-list" (submit)="onSubmit($event)">
+
+        <div class="question-card user-info-card">
+            <div class="question-head">
+                <span class="question-type text">基本資料</span>
+                <h3>聯絡人資訊</h3>
+            </div>
+
+            <div class="user-info-grid">
+                <div class="input-group">
+                    <label for="userName">姓名</label>
+                    <input type="text" id="userName" name="userName" [(ngModel)]="userInfo.name" placeholder="請輸入姓名"
+                        class="custom-input" required>
+                </div>
+                <div class="input-group">
+                    <label for="userPhone">電話</label>
+                    <input type="tel" id="userPhone" name="userPhone" [(ngModel)]="userInfo.phone"
+                        placeholder="0912-345-678" class="custom-input" required>
+                </div>
+                <div class="input-group">
+                    <label for="userEmail">信箱</label>
+                    <input type="email" id="userEmail" name="userEmail" [(ngModel)]="userInfo.email"
+                        placeholder="example@mail.com" class="custom-input" required>
+                </div>
+            </div>
+        </div>
+
+        @for (q of surveyData.questions; track q.id; let i = $index) {
+        <div class="question-card">
+            <div class="question-head">
+                <span class="question-type" [class]="q.type">
+                    {{ q.type === 'single' ? '單選題' : q.type === 'multiple' ? '複選題' : '開放題' }}
+                </span>
+                <h3>Q{{ i + 1 }}：{{ q.title }}</h3>
+            </div>
+
+            <div class="list-layout">
+                @switch (q.type) {
+                @case ('single') {
+                @for (opt of q.options; track opt) {
+                <label class="custom-option">
+                    <input type="radio" [name]="'q' + q.id" [value]="opt">
+                    <div class="option-box">{{ opt }}</div>
+                </label>
+                }
+                }
+                @case ('multiple') {
+                @for (opt of q.options; track opt) {
+                <label class="custom-option">
+                    <input type="checkbox" [name]="'q' + q.id" [value]="opt">
+                    <div class="option-box">{{ opt }}</div>
+                </label>
+                }
+                }
+                @case ('text') {
+                <textarea class="custom-textarea" [name]="'q' + q.id" placeholder="請在此分享您的寶貴想法..."></textarea>
+                }
+                }
+            </div>
+        </div>
+        }
+
+        <div class="action-footer">
+            <button type="button" class="btn-outline" (click)="goBack()">返回列表</button>
+            <button type="submit" class="btn-gaming-submit" [disabled]="isSubmitting">
+                {{ isSubmitting ? '進入預覽頁面...' : '送出問卷並預覽' }}
+            </button>
+        </div>
+    </form>
+</div>
+} @else {
+<div class="result-page loading-box">
+    <h1 class="survey-title">載入問卷中...</h1>
+</div>
+}
+
+@if (showModal) {
+<div class="modal-overlay">
+    @switch (modalStep) {
+        
+        @case ('confirm') {
+        <div class="gaming-modal">
+            <div class="modal-icon">📝</div>
+            <p class="modal-text">即將送出問卷，<br>確定內容填寫無誤嗎？</p>
+            <div class="modal-actions">
+                <button class="btn-modal-secondary" (click)="showModal = false">檢查一下</button>
+                <button class="btn-modal-primary" (click)="finalSubmit()" [disabled]="isSubmitting">
+                    {{ isSubmitting ? '傳送中...' : '確認送出' }}
+                </button>
+            </div>
+        </div>
+        }
+
+        @case ('thanks') {
+        <div class="gaming-modal modal-animate-in">
+            <div class="modal-icon">🎉</div>
+            <p class="modal-text thanks-header">感謝填寫問卷 !!</p>
+            <p class="modal-subtext">我們已收到您的寶貴建議。<br>正在為您開啟預覽頁面...</p>
+        </div>
+        }
+    }
+</div>
+}

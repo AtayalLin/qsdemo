@@ -1,0 +1,240 @@
+/* ======================================================
+    全螢幕背景（原有樣式不改）
+====================================================== */
+.bg-wave {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    background:
+        radial-gradient(700px 400px at 10% 15%, rgba(255, 191, 160, 0.18), transparent 65%),
+        radial-gradient(600px 360px at 85% 85%, rgba(244, 162, 97, 0.14), transparent 65%),
+        linear-gradient(160deg, #7d7b7a 0%, #241b16 45%, #7a7472 100%);
+}
+
+.bg-wave::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.035) 1px, transparent 1px, transparent 16px),
+        repeating-linear-gradient(45deg, rgba(244, 242, 240, 0.04), rgba(244, 242, 240, 0.04) 1px, transparent 1px, transparent 22px);
+    opacity: 0.7;
+}
+
+/* ======================================================
+    Result Page（主容器）
+====================================================== */
+.result-page {
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 40px;
+    background: rgba(255, 248, 240, 0.95);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    color: #6d4c41;
+    font-family: 'Noto Sans JP', 'Noto Sans TC', 'Segoe UI', sans-serif;
+}
+
+.result-page .survey-header { margin-bottom: 36px; }
+.result-page .survey-title { font-size: 30px; font-weight: 700; margin-bottom: 14px; color: #6d4c41; }
+.result-page .survey-meta { display: flex; flex-wrap: wrap; gap: 18px; font-size: 0.9rem; color: #9c6f55; }
+
+/* ======================================================
+    Question Card & Chart (原有內容樣式不改)
+====================================================== */
+.result-page .question-list { display: flex; flex-direction: column; gap: 28px; }
+.result-page .question-card {
+    padding: 28px 30px;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1);
+}
+.result-page .question-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.result-page .question-head h3 { font-size: 1.05rem; font-weight: 600; margin: 0; color: #6d4c41; }
+
+.result-page .question-type { font-size: 0.75rem; padding: 4px 12px; border-radius: 999px; font-weight: 500; letter-spacing: 0.5px; }
+.result-page .question-type.single { background: #ffd3c0; color: #6d4c41; }
+.result-page .question-type.multiple { background: #ffe6d8; color: #6d4c41; }
+.result-page .question-type.text { background: #e9f5f2; color: #2a9d8f; }
+
+.result-page .chart-layout { display: grid; grid-template-columns: 320px 1fr; gap: 30px; align-items: center; padding: 20px 0; }
+.result-page .chart-wrapper { position: relative; width: 300px; height: 300px; margin: 0 auto; overflow: visible !important; }
+.result-page .chart-wrapper canvas { width: 100% !important; height: 100% !important; display: block; }
+.result-page .chart-legend { display: flex; flex-direction: column; gap: 15px; }
+.result-page .legend-item { display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; }
+
+.legend-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; }
+.mobile-color-dot { background-color: #a55eea; }
+.ps-color { background-color: #6366f1; }
+.xbox-color { background-color: #22c55e; }
+.switch-color { background-color: #ff4757; }
+.pc-color { background-color: #ffa502; }
+
+.chart-container {
+  position: relative;
+  height: 300px; /* 或您原本設定的高度 */
+  width: 100%;
+  margin: 0 auto;
+  /* 確保外層沒有 overflow: hidden，不然彈出的區塊會被切掉 */
+}
+
+/* ======================================================
+    Progress Bar (原有進度條邏輯不改)
+====================================================== */
+.result-page .progress { height: 16px !important; background-color: #e6bfa6; border-radius: 999px; overflow: hidden; margin-top: 8px; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2); }
+.result-page .progress-bar { height: 100%; border-radius: 999px; transition: width 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; }
+.result-page .progress-bar-striped { background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent); background-size: 1rem 1rem; }
+.result-page .progress-bar-animated { animation: progress-bar-stripes 1s linear infinite; }
+@keyframes progress-bar-stripes { from { background-position: 1rem 0; } to { background-position: 0 0; } }
+
+.color-q2 .progress-bar { background-color: #22c55e !important; }
+.color-q3 .progress-bar { background-color: #0ea5e9 !important; }
+.color-q4 .progress-bar { background-color: #e76f51 !important; }
+.progress-bar-striped { background-blend-mode: soft-light; }
+
+.result-page .option-list { list-style: none; padding: 0; margin: 0; }
+.result-page .option-list li { margin-bottom: 18px; }
+.result-page .option-content { display: flex; flex-direction: column; gap: 8px; }
+.result-page .option-text { display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; color: #6d4c41; }
+.result-page .result-text { font-size: 0.85rem; font-weight: 600; color: #e76f51; }
+.result-page .text-summary { font-size: 0.95rem; color: #9c6f55; line-height: 1.6; padding: 15px; background: rgba(0,0,0,0.03); border-radius: 10px; }
+
+/* ======================================================
+    結果頁底部操作區 (修正排版與按鈕風格)
+====================================================== */
+.result-footer {
+    display: flex;
+    justify-content: flex-end; /* 右對齊 */
+    align-items: center;
+    margin-top: 40px;
+    padding-bottom: 60px;
+    gap: 20px;
+}
+
+/* 返回按鈕 (木質調) */
+.btn-gaming-submit {
+    padding: 12px 30px;
+    background: #6d4c41 !important;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 5px 0 #4e342e;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover { transform: translateY(-3px); background: #8d6e63 !important; box-shadow: 0 8px 0 #4e342e; }
+    &:active { transform: translateY(2px); box-shadow: 0 2px 0 #4e342e; }
+}
+
+/* 訂閱觸發按鈕 (發光電競調) */
+.btn-subscribe-trigger {
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #6366f1 0%, #a55eea 100%) !important;
+    color: #fff !important;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 0 #4834d4, 0 10px 20px rgba(99, 102, 241, 0.3);
+
+    &:hover { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 8px 0 #4834d4; }
+}
+
+/* ======================================================
+    彈出式視窗 (Modal)
+====================================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5); /* 淡灰色遮罩 */
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.gaming-modal {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    border: 4px solid #6d4c41;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    .modal-icon { font-size: 3rem; margin-bottom: 20px; }
+    .modal-text { font-size: 1.25rem; font-weight: 700; color: #4e342e; margin-bottom: 30px; }
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+
+    button {
+        padding: 10px 25px;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+    }
+}
+
+/* 視窗內的按鈕顏色定義 */
+.btn-modal-primary { 
+    background: #6d4c41 !important; color: white !important; 
+    box-shadow: 0 4px 0 #4e342e;
+    &:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #4e342e; }
+}
+
+.btn-modal-secondary { 
+    background: #e0e0e0; color: #616161; 
+    &:hover { background: #bdbdbd; }
+}
+
+.btn-modal-confirm {
+    background: #2a9d8f !important; color: white !important;
+    box-shadow: 0 4px 0 #1f7a6f;
+    &:disabled { background: #ccc !important; box-shadow: none; cursor: not-allowed; }
+}
+
+/* 輸入框 */
+.input-wrapper {
+    margin-bottom: 25px;
+    .gaming-input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #d7ccc8;
+        border-radius: 10px;
+        outline: none;
+        font-size: 1rem;
+        &:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+    }
+}
+
+/* 感謝內容文字 */
+.thanks-header { color: #2a9d8f; font-size: 1.5rem; font-weight: 800; }
+
+@keyframes modalPop {
+    from { opacity: 0; transform: scale(0.9) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* RWD */
+@media screen and (max-width: 768px) {
+    .result-footer { flex-direction: column; align-items: stretch; }
+    .btn-gaming-submit, .btn-subscribe-trigger { width: 100%; justify-content: center; }
+    .modal-actions { flex-direction: column; }
+}
